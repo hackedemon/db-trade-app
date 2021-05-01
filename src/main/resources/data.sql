@@ -10,3 +10,43 @@ CREATE TABLE trade_book (
 	expired BOOLEAN NOT NULL
 );
 
+INSERT INTO trade_book
+VALUES (
+	'T1',
+	1,
+	'CP-1',
+	'B1',
+	'2021-05-20',
+	'2021-04-28',
+	false
+);
+INSERT INTO trade_book
+VALUES (
+	'T2',
+	2,
+	'CP-2',
+	'B1',
+	'2021-05-20',
+	'2021-04-28',
+	false
+);
+INSERT INTO trade_book
+VALUES (
+	'T2',
+	1,
+	'CP-1',
+	'B1',
+	'2014-05-20',
+	'2021-04-28',
+	false
+);
+INSERT INTO trade_book
+VALUES (
+	'T3',
+	3,
+	'CP-3',
+	'B2',
+	'2014-05-20',
+	'2021-04-28',
+	true
+);
