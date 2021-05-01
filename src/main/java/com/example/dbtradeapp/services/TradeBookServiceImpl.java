@@ -3,6 +3,8 @@ package com.example.dbtradeapp.services;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -36,7 +38,7 @@ public class TradeBookServiceImpl implements TradeBookService {
 
 	@Override
 	@Transactional
-	public void addTrade(TradeBook tradeBook) {
+	public TradeBook addTrade(@NotNull TradeBook tradeBook) {
 		if (tradeBook.getMaturityDate().compareTo(LocalDate.now()) < 0) {
 			throw new InvalidDataException(maturityDateInvalid);
 		}
@@ -45,7 +47,10 @@ public class TradeBookServiceImpl implements TradeBookService {
 				throw new InvalidDataException(versionInvalid);
 			}
 		}));
+		tradeBook.setCreatedDate(LocalDate.now());
+		tradeBook.setExpired(false);
 		repo.save(tradeBook);
+		return tradeBook;
 	}
 	
 	@Override

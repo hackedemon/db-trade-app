@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.dbtradeapp.dtos.TradeBookGetDTO;
 import com.example.dbtradeapp.entities.TradeBook;
 import com.example.dbtradeapp.services.TradeBookService;
 
@@ -53,23 +54,20 @@ public class TradeBookControllerTest {
 	
 	@Test
 	public void getByTradeBookId_test() throws RestClientException, URISyntaxException {
-		ResponseEntity<TradeBook> response = restTemplate.getForEntity(new URI("http://localhost:" + port
-				+ "/trade-book/trade-id/" + entity.getTradeId() + "/version/" + entity.getVersion()), TradeBook.class);
+		ResponseEntity<TradeBookGetDTO> response = restTemplate.getForEntity(new URI("http://localhost:" + port
+				+ "/trade-book/trade-id/" + entity.getTradeId() + "/version/" + entity.getVersion()),
+				TradeBookGetDTO.class);
 		when(service.getById(any(String.class), any(Integer.class))).thenReturn(entity);
 
 		System.out.println(response.getBody());
-		assertEquals(entity, response.getBody());
+		assertEquals(getTradeBookGetDTO(entity), response.getBody());
 	}
 	
 	@Test
 	public void addTrade_test() throws RestClientException, URISyntaxException {
-		ResponseEntity<String> response = restTemplate.postForEntity(new URI("http://localhost:" + port + "/trade-book/add"), entity, String.class);
+		ResponseEntity<Object> response = restTemplate.postForEntity(new URI("http://localhost:" + port + "/trade-book/add"), entity, Object.class);
 		
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-		
-		LocalDate localdate1 = LocalDate.now();
-		LocalDate localdate2 = LocalDate.now();
-		System.out.println(localdate1.compareTo(localdate2));
+		assertEquals(HttpStatus.CREATED, response.getStatusCode());
 	}
 	
 	@Test
@@ -79,6 +77,18 @@ public class TradeBookControllerTest {
 	            .contentType(MediaType.APPLICATION_JSON)
 	            .content(entity.toString()))
 	            .andExpect(MockMvcResultMatchers.status().isBadRequest());
+	}
+	
+	private TradeBookGetDTO getTradeBookGetDTO(TradeBook tradeBook) {
+		return TradeBookGetDTO.builder()
+				.bookId(tradeBook.getBookId())
+				.counterPartyId(tradeBook.getCounterPartyId())
+				.maturityDate(tradeBook.getMaturityDate())
+				.tradeId(tradeBook.getTradeId())
+				.version(tradeBook.getVersion())
+				.createdDate(tradeBook.getCreatedDate())
+				.expired(tradeBook.isExpired())
+				.build();
 	}
 	
 }

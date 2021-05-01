@@ -1,13 +1,8 @@
-package com.example.dbtradeapp.entities;
+package com.example.dbtradeapp.dtos;
 
 import java.time.LocalDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-
-import com.example.dbtradeapp.entities.composite.TradeBookId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,32 +14,24 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
-@Entity(name = "trade_book")
-@IdClass(TradeBookId.class)
-public class TradeBook {
+public class TradeBookGetDTO {
 
-	@Id
 	private String tradeId;
 
-	@Id
 	private int version;
 
-	@Column
 	private String counterPartyId;
 
-	@Column
 	private String bookId;
 
-	@Column
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate maturityDate;
 
-	@Column
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate createdDate;
 
-	@Column
 	private boolean expired;
-
 }
