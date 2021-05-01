@@ -11,11 +11,17 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,6 +29,7 @@ import com.example.dbtradeapp.entities.TradeBook;
 import com.example.dbtradeapp.services.TradeBookService;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 public class TradeBookControllerTest {
 
 	@LocalServerPort
@@ -30,6 +37,9 @@ public class TradeBookControllerTest {
 	
 	@Mock
 	private TradeBookService service;
+	
+	@Autowired
+	private MockMvc mockMvc;
 	
 	private RestTemplate restTemplate = new RestTemplate();
 	
@@ -56,6 +66,20 @@ public class TradeBookControllerTest {
 		ResponseEntity<String> response = restTemplate.postForEntity(new URI("http://localhost:" + port + "/trade-book/add"), entity, String.class);
 		
 		assertEquals(HttpStatus.OK, response.getStatusCode());
+		
+		LocalDate localdate1 = LocalDate.now();
+		LocalDate localdate2 = LocalDate.now();
+		System.out.println(localdate1.compareTo(localdate2));
+	}
+	
+	@Test
+	public void addTrade_errorTest() throws Exception {
+		entity.setTradeId("");
+//		restTemplate.postForEntity(new URI("http://localhost:" + port + "/trade-book/add"), entity, String.class);
+		mockMvc.perform(MockMvcRequestBuilders.post("/trade-book/add")
+	            .contentType(MediaType.APPLICATION_JSON)
+	            .content(entity.toString()))
+	            .andExpect(MockMvcResultMatchers.status().isBadRequest());
 	}
 	
 }
