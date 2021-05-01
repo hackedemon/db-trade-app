@@ -29,22 +29,22 @@ import lombok.Setter;
 public class TradeBook {
 
 	@Id
-	@NotBlank(message = "Trade id cannot be empty")
+	@NotBlank(message = "{tradeId.notBlank}")
 	private String tradeId;
 
 	@Id
-	@Min(value = 1, message = "Version cannot be empty")
+	@Min(value = 1, message = "{version.min}")
 	private int version;
 
 	@Column
-	@NotBlank(message = "Counter party id cannot be empty")
+	@NotBlank(message = "{counterPartyId.notBlank}")
 	private String counterPartyId;
 
 	@Column
-	@NotBlank(message = "Book id cannot be empty")
+	@NotBlank(message = "{bookId.notEmpty}")
 	private String bookId;
 
-	@NotNull(message = "Maturity date cannot be empty")
+	@NotNull(message = "{maturityDate.notEmpty}")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	@Column
 	private LocalDate maturityDate;

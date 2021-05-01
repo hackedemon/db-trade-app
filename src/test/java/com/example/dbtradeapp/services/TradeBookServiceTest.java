@@ -58,7 +58,8 @@ public class TradeBookServiceTest {
 	@Test
 	public void addTrade_InvalidMaturityDate_test() {
 		entity.setMaturityDate(LocalDate.now().minusDays(1));
-		assertThrows(InvalidDataException.class, () -> service.addTrade(entity));
+		InvalidDataException exception = assertThrows(InvalidDataException.class, () -> service.addTrade(entity));
+		assertEquals(exception.getMessage(), "");
 	}
 
 	@Test
@@ -70,7 +71,8 @@ public class TradeBookServiceTest {
 		when(repo.findByTradeId(any(String.class))).thenReturn(Optional.of(list));
 		entity.setVersion(2);
 
-		assertThrows(InvalidDataException.class, () -> service.addTrade(entity));
+		InvalidDataException exception = assertThrows(InvalidDataException.class, () -> service.addTrade(entity));
+		assertEquals(exception.getMessage(), "");
 	}
 
 }
