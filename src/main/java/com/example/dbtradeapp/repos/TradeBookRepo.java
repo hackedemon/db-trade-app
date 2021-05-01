@@ -1,5 +1,6 @@
 package com.example.dbtradeapp.repos;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,18 @@ import com.example.dbtradeapp.entities.composite.TradeBookId;
 @Repository
 public interface TradeBookRepo extends JpaRepository<TradeBook, TradeBookId> {
 
+	/**
+	 * Fetches all entities filtered by tradeId.
+	 * @param tradeId
+	 * @return
+	 */
 	Optional<List<TradeBook>> findByTradeId(String tradeId);
+	
+	/**
+	 * Fetches all entities less than maturity date.
+	 * @param maturityDate
+	 * @return
+	 */
+	Optional<List<TradeBook>> findByMaturityDateLessThan(LocalDate maturityDate);
 	
 }

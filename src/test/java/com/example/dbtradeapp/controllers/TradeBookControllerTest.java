@@ -75,7 +75,6 @@ public class TradeBookControllerTest {
 	@Test
 	public void addTrade_errorTest() throws Exception {
 		entity.setTradeId("");
-//		restTemplate.postForEntity(new URI("http://localhost:" + port + "/trade-book/add"), entity, String.class);
 		mockMvc.perform(MockMvcRequestBuilders.post("/trade-book/add")
 	            .contentType(MediaType.APPLICATION_JSON)
 	            .content(entity.toString()))
